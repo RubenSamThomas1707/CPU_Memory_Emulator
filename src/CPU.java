@@ -12,10 +12,10 @@ public class CPU {
             Runtime rt = Runtime.getRuntime();
 
                 //  Process code to run program in cmd
-            //Process memProc = rt.exec("java Memory input " + args[0]);
+            Process memProc = rt.exec("java Memory input " + args[0]);
 
                 //  Process code to run program in IDE
-            Process memProc = rt.exec("java -cp out/production/\"Project 1\" Memory input src/\"sample2.txt\"");
+            //Process memProc = rt.exec("java -cp out/production/\"Project 1\" Memory input src/\"sample2.txt\"");
 
                 //  Initializing streams for interprocess communication
             InputStream is = memProc.getInputStream();
@@ -25,7 +25,7 @@ public class CPU {
                 //  Defining CPU variables
             int pgrmCounter = 0;
             int sPointer = 1000;
-            int instrReg = -1;
+            int instrReg;
             int accumulator = 0;
             int X = 0;
             int Y = 0;
