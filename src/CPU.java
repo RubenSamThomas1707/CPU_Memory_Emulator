@@ -5,7 +5,7 @@ import java.io.*;
 public class CPU {
 
     public static void main(String[] args){
-        System.out.println("Printing from CPU");
+        System.out.println("Starting the emulator...");
 
         try{
                 // Creating memory process
@@ -37,8 +37,10 @@ public class CPU {
                 pw.printf("r " + pgrmCounter + "\n");
                 pw.flush();
 
+                    //  Getting the instruction sent as a response form memory into the instruction register
                 instrReg = getResponseFromMemory(is);
 
+                    //  Switch statement to execute the necessary commands for an instruction
                 switch(instrReg){
                     case 1:
                         break;
@@ -57,7 +59,7 @@ public class CPU {
                     case 8:
                         Random r = new Random();
                         accumulator = r.nextInt( 100 - 1) + 1;
-                        System.out.println("Random number generated is: " + accumulator);
+                        System.out.println("Random number generated: " + accumulator);
                         pgrmCounter++;
                         break;
                     case 9:
@@ -128,18 +130,18 @@ public class CPU {
                     default:
                             //  Ending execution when the End instruction is received
                         sendRequest = false;
-                        System.out.println("Exiting...");
+                        System.out.println("Exiting instruction received...");
+                            //  Exiting Memory.java process
+                        pw.printf("e\n");
+                        pw.flush();
                         break;
                 }
             }
 
-                //  Killing the child process
-            memProc.destroy();
-
                 //  Elegantly killing child process
-            //memProc.waitFor();
+            memProc.waitFor();
 
-            System.out.println("Process deleted");
+            System.out.println("Process exited: " + memProc.exitValue());
             System.out.println("Exiting the emulator...");
         }
         catch (Exception e){

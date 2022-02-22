@@ -40,10 +40,10 @@ public class Memory {
 
                 default:
                     processActive = false;
-                    System.out.println("Exiting the process...");
                     break;
             }
         }
+        System.exit(0);
     }
 
         //  Function to insert instructions into the array
