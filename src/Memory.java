@@ -4,11 +4,10 @@ import java.io.*;
 
 public class Memory {
     public static void main(String[] args){
-        System.out.println("*** CURRENTLY RUNNING: Memory.java ***");
         int[] instrList = new int[2000];
         Arrays.fill(instrList, -1);
         String filename = args[1];
-        int currIndex = 0;
+        boolean processActive = true;
 
             //  Checking if the Memory file needs to take in input from the file
         if(args[0].equals("input")){
@@ -19,31 +18,29 @@ public class Memory {
         Scanner scan = new Scanner(System.in);
 
             //  Checking if any data has been sent by the CPU
-        while(scan.hasNext()){
+        while(processActive){
                 //  Storing different information sent by the CPU in an array
             String[] cpuCmd = scan.nextLine().split(" ");
-            System.out.println("Message sent by CPU is: " + cpuCmd[0]);
 
                 //  Switch statement to read or write information to and from the instrList array
             switch (cpuCmd[0]){
                     //  Case to read information from instrList and send over to CPU
-                case "read":
-                    System.out.println(instrList[currIndex]);
-                    currIndex++;
+                case "r":
+                    int index = Integer.parseInt(cpuCmd[1]);
+                    System.out.println(instrList[index]);
                     break;
 
                     // Case to write information at the provided at the index specified by the CPU
-                case "write":
-                    System.out.println(cpuCmd[1] + " " + cpuCmd[2]);
+                case "w":
+                    System.out.println("Writing");
                     int indexToWrite = Integer.parseInt(cpuCmd[1]);
                     int numToWrite = Integer.parseInt(cpuCmd[2]);
                     instrList[indexToWrite] = numToWrite;
                     break;
 
                 default:
-                    System.out.println("Exiting...");
-                    System.out.println("*** CLOSING: Memory.java ***");
-                    return;
+                    processActive = false;
+                    break;
             }
         }
     }
@@ -55,7 +52,6 @@ public class Memory {
             Scanner inFileScanner = new Scanner(inFile);
             int index = 0;
 
-            System.out.println("Populating array with instructions from " + filename);
                 //  Iterating through input file to place information into the array
             while(inFileScanner.hasNext()){
                     //   Getting next line from the input file
@@ -94,6 +90,7 @@ public class Memory {
         }       //  End of catch statement
     }
 
+        //  Function to print the instruction list array for debugging
     private static void printInstrList(int[] instrList){
         int currIndex = 0;
         for(int num: instrList){
