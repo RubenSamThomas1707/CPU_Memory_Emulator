@@ -76,11 +76,6 @@ public class Memory {
                     }
                 }
             }
-
-            /********************************/
-                //  For debugging and checking if the information has been loaded correctly
-            //printInstrList(instrList);
-            /********************************/
         }       //  End of try statement
 
         catch (Exception e){

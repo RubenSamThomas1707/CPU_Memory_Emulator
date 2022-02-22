@@ -15,7 +15,8 @@ public class CPU {
             Process memProc = rt.exec("java Memory input " + args[0]);
 
                 //  Process code to run program in IDE
-            //Process memProc = rt.exec("java -cp out/production/\"Project 1\" Memory input src/\"<FileName.txt>\"");
+
+            //Process memProc = rt.exec("java -cp out/production/\"Project 1\" Memory input src/\"sample1.txt\"");
 
                 //  Initializing streams for interprocess communication
             InputStream is = memProc.getInputStream();
@@ -31,6 +32,7 @@ public class CPU {
             int Y = 0;
             boolean isKernelMode = false;
             boolean sendRequest = true;
+            boolean timerInt = false;
 
             while(sendRequest){
                 //  Sending instructions from CPU to Memory
@@ -53,26 +55,72 @@ public class CPU {
 
                         //  Load value at the given address into the accumulator
                     case 2:
+                        pgrmCounter++;
+                        pw.printf("r " + pgrmCounter + "\n");
+                        pw.flush();
+                        instrReg = getResponseFromMemory(is);
+                        pw.printf("r " + instrReg + "\n");
+                        pw.flush();
+                        accumulator = getResponseFromMemory(is);
+                        pgrmCounter++;
                         break;
 
                         //  Load value from the address found in the given address into the accumulator
                     case 3:
+                        pgrmCounter++;
+                        pw.printf("r " + pgrmCounter + "\n");
+                        pw.flush();
+                        instrReg = getResponseFromMemory(is);
+                        pw.printf("r " + instrReg + "\n");
+                        pw.flush();
+                        instrReg = getResponseFromMemory(is);
+                        pw.printf("r " + instrReg + "\n");
+                        pw.flush();
+                        accumulator = getResponseFromMemory(is);
+                        pgrmCounter++;
                         break;
 
                         //  Load value at (address+X) into the accumulator
                     case 4:
+                        pgrmCounter++;
+                        pw.printf("r " + pgrmCounter + "\n");
+                        pw.flush();
+                        instrReg = (getResponseFromMemory(is) + X);
+                        pw.printf("r " + instrReg + "\n");
+                        pw.flush();
+                        accumulator = getResponseFromMemory(is);
+                        pgrmCounter++;
                         break;
 
                         //  Load value at (address+Y) into the accumulator
                     case 5:
+                        pgrmCounter++;
+                        pw.printf("r " + pgrmCounter + "\n");
+                        pw.flush();
+                        instrReg = getResponseFromMemory(is) + Y;
+                        pw.printf("r " + instrReg + "\n");
+                        pw.flush();
+                        accumulator = getResponseFromMemory(is);
+                        pgrmCounter++;
                         break;
 
-                        //  Load from (SPointer+X) into the accumulator
+                        //  Load from (sPointer+X) into the accumulator
                     case 6:
+                        instrReg = (sPointer + X);
+                        pw.printf("r " + instrReg + "\n");
+                        pw.flush();
+                        accumulator = getResponseFromMemory(is);
                         break;
 
                         //  Store value in the accumulator to the address
                     case 7:
+                        pgrmCounter++;
+                        pw.printf("r " + pgrmCounter + "\n");
+                        pw.flush();
+                        instrReg = getResponseFromMemory(is);
+                        pw.printf("w " + instrReg + " " + accumulator + "\n");
+                        pw.flush();
+                        pgrmCounter++;
                         break;
 
                         //  Generating a random integer and storing in the accumulator
@@ -162,14 +210,39 @@ public class CPU {
 
                         //  Jump to the given address
                     case 20:
+                        pgrmCounter++;
+                        pw.printf("r " + pgrmCounter + "\n");
+                        pw.flush();
+                        instrReg = getResponseFromMemory(is);
+                        pgrmCounter = instrReg;
                         break;
 
                         //  Jump to given address if value of accumulator == 0
                     case 21:
+                        if(accumulator == 0){
+                            pgrmCounter++;
+                            pw.printf("r " + pgrmCounter + "\n");
+                            pw.flush();
+                            instrReg = getResponseFromMemory(is);
+                            pgrmCounter = instrReg;
+                        }
+                        else{
+                            pgrmCounter += 2;
+                        }
                         break;
 
                         // Jump to given address if value of accumulator != 0
                     case 22:
+                        if(accumulator != 0){
+                            pgrmCounter++;
+                            pw.printf("r " + pgrmCounter + "\n");
+                            pw.flush();
+                            instrReg = getResponseFromMemory(is);
+                            pgrmCounter = instrReg;
+                        }
+                        else{
+                            pgrmCounter += 2;
+                        }
                         break;
 
                         //  Push next instruction to sPointer and jump to the given address
@@ -196,33 +269,48 @@ public class CPU {
 
                         //  Increment value of X
                     case 25:
+                        X++;
+                        pgrmCounter++;
                         break;
 
                         // Decrement value in X
                     case 26:
+                        X--;
+                        pgrmCounter++;
                         break;
 
                         //  Push accumulator to the stack
                     case 27:
+                        sPointer--;
+                        pw.printf("w " + sPointer + " " + accumulator + "\n");
+                        pw.flush();
+                        pgrmCounter++;
                         break;
 
                         // Pop from stack into the accumulator
                     case 28:
+                        pw.printf("r " + sPointer + "\n");
+                        pw.flush();
+                        sPointer++;
+                        accumulator = getResponseFromMemory(is);
+                        pgrmCounter++;
                         break;
 
                         //  Perform system call
                     case 29:
+                        // Change mode to kernel and move current data in user stack to system stack
                         break;
 
                         //  Return from system call
                     case 30:
+                        // Switch back to user mode from kernel mode and load data back into user stack from system stack
                         break;
 
                         //  End Execution
                     default:
                             //  Ending execution when the End instruction is received
                         sendRequest = false;
-                        System.out.println("\nEnd instruction received...");
+                        System.out.println("End instruction received...");
                             //  Exiting Memory.java process
                         pw.printf("e\n");
                         pw.flush();
