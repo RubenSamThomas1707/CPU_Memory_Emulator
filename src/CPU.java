@@ -12,11 +12,10 @@ public class CPU {
             Runtime rt = Runtime.getRuntime();
 
                 //  Process code to run program in cmd
-            Process memProc = rt.exec("java Memory input " + args[0]);
+            //Process memProc = rt.exec("java Memory input " + args[0]);
 
                 //  Process code to run program in IDE
-
-            //Process memProc = rt.exec("java -cp out/production/\"Project 1\" Memory input src/\"sample1.txt\"");
+            Process memProc = rt.exec("java -cp out/production/\"Project 1\" Memory input src/\"sample2.txt\"");
 
                 //  Initializing streams for interprocess communication
             InputStream is = memProc.getInputStream();
@@ -30,8 +29,8 @@ public class CPU {
             int accumulator = 0;
             int X = 0;
             int Y = 0;
-            boolean isKernelMode = false;
             boolean sendRequest = true;
+            boolean isKernelMode = false;
             boolean timerInt = false;
 
             while(sendRequest){
@@ -110,6 +109,7 @@ public class CPU {
                         pw.printf("r " + instrReg + "\n");
                         pw.flush();
                         accumulator = getResponseFromMemory(is);
+                        pgrmCounter++;
                         break;
 
                         //  Store value in the accumulator to the address
