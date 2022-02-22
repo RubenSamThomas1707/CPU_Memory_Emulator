@@ -32,7 +32,6 @@ public class Memory {
 
                     // Case to write information at the provided at the index specified by the CPU
                 case "w":
-                    System.out.println("Writing");
                     int indexToWrite = Integer.parseInt(cpuCmd[1]);
                     int numToWrite = Integer.parseInt(cpuCmd[2]);
                     instrList[indexToWrite] = numToWrite;
@@ -89,5 +88,15 @@ public class Memory {
             System.out.println("Exiting...");
             e.printStackTrace();
         }       //  End of catch statement
+    }
+
+    //  Function to print the instruction list array for debugging
+    private static void printInstrList(int[] instrList){
+        int currIndex = 0;
+        for(int num: instrList){
+            System.out.println("Index: " + currIndex + "; Value: " + num);
+            currIndex++;
+        }
+        System.out.println();
     }
 }

@@ -1,4 +1,4 @@
-8   // Get
+8   // Get [This program gets 3 random integers and sums them, then prints the result.]
 14  // CopyToX
 8   // Get
 16  // CopyToY
