@@ -15,7 +15,7 @@ public class CPU {
             Process memProc = rt.exec("java Memory input " + args[0]);
 
                 //  Process code to run program in IDE
-            //Process memProc = rt.exec("java -cp out/production/\"Project 1\" Memory input src/\"sample3.txt\"");
+            //Process memProc = rt.exec("java -cp out/production/\"Project 1\" Memory input src/\"rand_sum_3.txt\"");
 
                 //  Initializing streams for interprocess communication
             InputStream is = memProc.getInputStream();
@@ -30,7 +30,7 @@ public class CPU {
             int X = 0;
             int Y = 0;
             int timerRate = Integer.parseInt(args[1]);
-            /*int timerRate = 30;*/
+            //int timerRate = 30;
             int instrCount = 0;
             boolean sendRequest = true;
             boolean isKernelMode = false;
