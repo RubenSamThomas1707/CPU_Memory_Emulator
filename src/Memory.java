@@ -84,14 +84,4 @@ public class Memory {
             e.printStackTrace();
         }       //  End of catch statement
     }
-
-    //  Function to print the instruction list array for debugging
-    private static void printInstrList(int[] instrList){
-        int currIndex = 0;
-        for(int num: instrList){
-            System.out.println("Index: " + currIndex + "; Value: " + num);
-            currIndex++;
-        }
-        System.out.println();
-    }
 }

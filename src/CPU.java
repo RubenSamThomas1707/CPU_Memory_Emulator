@@ -5,24 +5,22 @@ import java.io.*;
 public class CPU {
 
     public static void main(String[] args){
-        System.out.println("Starting emulator...");
-
         try{
-                // Creating memory process
+            // Creating memory process
             Runtime rt = Runtime.getRuntime();
 
-                //  Process code to run program in cmd
+            //  Process code to run program in cmd
             Process memProc = rt.exec("java Memory input " + args[0]);
 
-                //  Process code to run program in IDE
-            //Process memProc = rt.exec("java -cp out/production/\"Project 1\" Memory input src/\"rand_sum_3.txt\"");
+            //  Process code to run program in IDE
+            //Process memProc = rt.exec("java -cp out/production/\"Project 1\" Memory input src/\"sample5.txt\"");
 
-                //  Initializing streams for interprocess communication
+            //  Initializing streams for interprocess communication
             InputStream is = memProc.getInputStream();
             OutputStream os = memProc.getOutputStream();
             PrintWriter pw = new PrintWriter(os);
 
-                //  Defining CPU variables
+            //  Defining CPU variables
             int pgrmCounter = 0;
             int sPointer = 1000;
             int instrReg;
@@ -30,20 +28,20 @@ public class CPU {
             int X = 0;
             int Y = 0;
             int timerRate = Integer.parseInt(args[1]);
-            //int timerRate = 30;
+            //int timerRate = 473;
             int instrCount = 0;
             boolean sendRequest = true;
             boolean isKernelMode = false;
             boolean interruptOn = false;
 
-                //  Sending requests from the CPU to the Memory till end instruction is received
+            //  Sending requests from the CPU to the Memory till end instruction is received
             while(sendRequest){
-                    //  Verifying whether the user has access to the address
+                //  Verifying whether the user has access to the address
                 verifyMemoryAccess(pgrmCounter, isKernelMode, pw);
 
-                    //  Checking if program is already in the middle of an interrupt
+                //  Checking if program is already in the middle of an interrupt
                 if(!interruptOn){
-                        // Checking for timer interrupt
+                    // Checking for timer interrupt
                     if(instrCount >= timerRate){
                         isKernelMode = true;
                         instrCount = 0;
@@ -66,21 +64,9 @@ public class CPU {
                     //  Load value in to the accumulator
                     case 1:
                         pgrmCounter++;
-                            //  Verifying whether the user has access to the address
+                        //  Verifying whether the user has access to the address
                         verifyMemoryAccess(pgrmCounter, isKernelMode, pw);
                         instrCount++;
-                        /*//  Checking if program is already in the middle of an interrupt
-                        if(!interruptOn){
-                            // Checking for timer interrupt
-                            if(instrCount >= timerRate){
-                                isKernelMode = true;
-                                instrCount = 0;
-                                int[] contents = moveToSystemMemory(pgrmCounter, pw, sPointer, 't');
-                                pgrmCounter = contents[0];
-                                sPointer = contents[1];
-                                interruptOn = true;
-                            }
-                        }*/
 
                         pw.printf("r " + pgrmCounter + "\n");
                         pw.flush();
@@ -92,40 +78,16 @@ public class CPU {
                     //  Load value at the given address into the accumulator
                     case 2:
                         pgrmCounter++;
-                            //  Verifying whether the user has access to the address
+                        //  Verifying whether the user has access to the address
                         verifyMemoryAccess(pgrmCounter, isKernelMode, pw);
                         instrCount++;
-                        /*//  Checking if program is already in the middle of an interrupt
-                        if(!interruptOn){
-                            // Checking for timer interrupt
-                            if(instrCount >= timerRate){
-                                isKernelMode = true;
-                                instrCount = 0;
-                                int[] contents = moveToSystemMemory(pgrmCounter, pw, sPointer, 't');
-                                pgrmCounter = contents[0];
-                                sPointer = contents[1];
-                                interruptOn = true;
-                            }
-                        }*/
 
                         pw.printf("r " + pgrmCounter + "\n");
                         pw.flush();
                         instrReg = getResponseFromMemory(is);
-                            //  Verifying whether the user has access to the address
+                        //  Verifying whether the user has access to the address
                         verifyMemoryAccess(instrReg, isKernelMode, pw);
                         instrCount++;
-                        /*//  Checking if program is already in the middle of an interrupt
-                        if(!interruptOn){
-                            // Checking for timer interrupt
-                            if(instrCount >= timerRate){
-                                isKernelMode = true;
-                                instrCount = 0;
-                                int[] contents = moveToSystemMemory(pgrmCounter, pw, sPointer, 't');
-                                pgrmCounter = contents[0];
-                                sPointer = contents[1];
-                                interruptOn = true;
-                            }
-                        }*/
 
                         pw.printf("r " + instrReg + "\n");
                         pw.flush();
@@ -137,59 +99,23 @@ public class CPU {
                     //  Load value from the address found in the given address into the accumulator
                     case 3:
                         pgrmCounter++;
-                            //  Verifying whether the user has access to the address
+                        //  Verifying whether the user has access to the address
                         verifyMemoryAccess(pgrmCounter, isKernelMode, pw);
                         instrCount++;
-                        /*//  Checking if program is already in the middle of an interrupt
-                        if(!interruptOn){
-                            // Checking for timer interrupt
-                            if(instrCount >= timerRate){
-                                isKernelMode = true;
-                                instrCount = 0;
-                                int[] contents = moveToSystemMemory(pgrmCounter, pw, sPointer, 't');
-                                pgrmCounter = contents[0];
-                                sPointer = contents[1];
-                                interruptOn = true;
-                            }
-                        }*/
 
                         pw.printf("r " + pgrmCounter + "\n");
                         pw.flush();
                         instrReg = getResponseFromMemory(is);
-                            //  Verifying whether the user has access to the address
+                        //  Verifying whether the user has access to the address
                         verifyMemoryAccess(instrReg, isKernelMode, pw);
                         instrCount++;
-                        /*//  Checking if program is already in the middle of an interrupt
-                        if(!interruptOn){
-                            // Checking for timer interrupt
-                            if(instrCount >= timerRate){
-                                isKernelMode = true;
-                                instrCount = 0;
-                                int[] contents = moveToSystemMemory(pgrmCounter, pw, sPointer, 't');
-                                pgrmCounter = contents[0];
-                                sPointer = contents[1];
-                                interruptOn = true;
-                            }
-                        }*/
 
                         pw.printf("r " + instrReg + "\n");
                         pw.flush();
                         instrReg = getResponseFromMemory(is);
-                            //  Verifying whether the user has access to the address
+                        //  Verifying whether the user has access to the address
                         verifyMemoryAccess(instrReg, isKernelMode, pw);
                         instrCount++;
-                        /*//  Checking if program is already in the middle of an interrupt
-                        if(!interruptOn){
-                            // Checking for timer interrupt
-                            if(instrCount >= timerRate){
-                                isKernelMode = true;
-                                instrCount = 0;
-                                int[] contents = moveToSystemMemory(pgrmCounter, pw, sPointer, 't');
-                                pgrmCounter = contents[0];
-                                sPointer = contents[1];
-                                interruptOn = true;
-                            }
-                        }*/
 
                         pw.printf("r " + instrReg + "\n");
                         pw.flush();
@@ -201,40 +127,16 @@ public class CPU {
                     //  Load value at (address+X) into the accumulator
                     case 4:
                         pgrmCounter++;
-                            //  Verifying whether the user has access to the address
+                        //  Verifying whether the user has access to the address
                         verifyMemoryAccess(pgrmCounter, isKernelMode, pw);
                         instrCount++;
-                        /*//  Checking if program is already in the middle of an interrupt
-                        if(!interruptOn){
-                            // Checking for timer interrupt
-                            if(instrCount >= timerRate){
-                                isKernelMode = true;
-                                instrCount = 0;
-                                int[] contents = moveToSystemMemory(pgrmCounter, pw, sPointer, 't');
-                                pgrmCounter = contents[0];
-                                sPointer = contents[1];
-                                interruptOn = true;
-                            }
-                        }*/
 
                         pw.printf("r " + pgrmCounter + "\n");
                         pw.flush();
                         instrReg = (getResponseFromMemory(is) + X);
-                            //  Verifying whether the user has access to the address
+                        //  Verifying whether the user has access to the address
                         verifyMemoryAccess(instrReg, isKernelMode, pw);
                         instrCount++;
-                        /*//  Checking if program is already in the middle of an interrupt
-                        if(!interruptOn){
-                            // Checking for timer interrupt
-                            if(instrCount >= timerRate){
-                                isKernelMode = true;
-                                instrCount = 0;
-                                int[] contents = moveToSystemMemory(pgrmCounter, pw, sPointer, 't');
-                                pgrmCounter = contents[0];
-                                sPointer = contents[1];
-                                interruptOn = true;
-                            }
-                        }*/
 
                         pw.printf("r " + instrReg + "\n");
                         pw.flush();
@@ -246,40 +148,16 @@ public class CPU {
                     //  Load value at (address+Y) into the accumulator
                     case 5:
                         pgrmCounter++;
-                            //  Verifying whether the user has access to the address
+                        //  Verifying whether the user has access to the address
                         verifyMemoryAccess(pgrmCounter, isKernelMode, pw);
                         instrCount++;
-                        /*//  Checking if program is already in the middle of an interrupt
-                        if(!interruptOn){
-                            // Checking for timer interrupt
-                            if(instrCount >= timerRate){
-                                isKernelMode = true;
-                                instrCount = 0;
-                                int[] contents = moveToSystemMemory(pgrmCounter, pw, sPointer, 't');
-                                pgrmCounter = contents[0];
-                                sPointer = contents[1];
-                                interruptOn = true;
-                            }
-                        }*/
 
                         pw.printf("r " + pgrmCounter + "\n");
                         pw.flush();
                         instrReg = getResponseFromMemory(is) + Y;
-                            //  Verifying whether the user has access to the address
+                        //  Verifying whether the user has access to the address
                         verifyMemoryAccess(instrReg, isKernelMode, pw);
                         instrCount++;
-                        /*//  Checking if program is already in the middle of an interrupt
-                        if(!interruptOn){
-                            // Checking for timer interrupt
-                            if(instrCount >= timerRate){
-                                isKernelMode = true;
-                                instrCount = 0;
-                                int[] contents = moveToSystemMemory(pgrmCounter, pw, sPointer, 't');
-                                pgrmCounter = contents[0];
-                                sPointer = contents[1];
-                                interruptOn = true;
-                            }
-                        }*/
 
                         pw.printf("r " + instrReg + "\n");
                         pw.flush();
@@ -291,21 +169,9 @@ public class CPU {
                     //  Load from (sPointer+X) into the accumulator
                     case 6:
                         instrReg = (sPointer + X);
-                            //  Verifying whether the user has access to the address
+                        //  Verifying whether the user has access to the address
                         verifyMemoryAccess(instrReg, isKernelMode, pw);
                         instrCount++;
-                        /*//  Checking if program is already in the middle of an interrupt
-                        if(!interruptOn){
-                            // Checking for timer interrupt
-                            if(instrCount >= timerRate){
-                                isKernelMode = true;
-                                instrCount = 0;
-                                int[] contents = moveToSystemMemory(pgrmCounter, pw, sPointer, 't');
-                                pgrmCounter = contents[0];
-                                sPointer = contents[1];
-                                interruptOn = true;
-                            }
-                        }*/
 
                         pw.printf("r " + instrReg + "\n");
                         pw.flush();
@@ -317,40 +183,16 @@ public class CPU {
                     //  Store value in the accumulator to the address
                     case 7:
                         pgrmCounter++;
-                            //  Verifying whether the user has access to the address
+                        //  Verifying whether the user has access to the address
                         verifyMemoryAccess(pgrmCounter, isKernelMode, pw);
                         instrCount++;
-                        /*//  Checking if program is already in the middle of an interrupt
-                        if(!interruptOn){
-                            // Checking for timer interrupt
-                            if(instrCount >= timerRate){
-                                isKernelMode = true;
-                                instrCount = 0;
-                                int[] contents = moveToSystemMemory(pgrmCounter, pw, sPointer, 't');
-                                pgrmCounter = contents[0];
-                                sPointer = contents[1];
-                                interruptOn = true;
-                            }
-                        }*/
 
                         pw.printf("r " + pgrmCounter + "\n");
                         pw.flush();
                         instrReg = getResponseFromMemory(is);
-                            //  Verifying whether the user has access to the address
+                        //  Verifying whether the user has access to the address
                         verifyMemoryAccess(instrReg, isKernelMode, pw);
                         instrCount++;
-                        /*//  Checking if program is already in the middle of an interrupt
-                        if(!interruptOn){
-                            // Checking for timer interrupt
-                            if(instrCount >= timerRate){
-                                isKernelMode = true;
-                                instrCount = 0;
-                                int[] contents = moveToSystemMemory(pgrmCounter, pw, sPointer, 't');
-                                pgrmCounter = contents[0];
-                                sPointer = contents[1];
-                                interruptOn = true;
-                            }
-                        }*/
 
                         pw.printf("w " + instrReg + " " + accumulator + "\n");
                         pw.flush();
@@ -371,18 +213,6 @@ public class CPU {
                     case 9:
                         pgrmCounter++;
                         instrCount++;
-                        /*//  Checking if program is already in the middle of an interrupt
-                        if(!interruptOn){
-                            // Checking for timer interrupt
-                            if(instrCount >= timerRate){
-                                isKernelMode = true;
-                                instrCount = 0;
-                                int[] contents = moveToSystemMemory(pgrmCounter, pw, sPointer, 't');
-                                pgrmCounter = contents[0];
-                                sPointer = contents[1];
-                                interruptOn = true;
-                            }
-                        }*/
 
                         pw.printf("r " + pgrmCounter + "\n");
                         pw.flush();
@@ -472,21 +302,9 @@ public class CPU {
                     //  Jump to the given address
                     case 20:
                         pgrmCounter++;
-                            //  Verifying whether the user has access to the address
+                        //  Verifying whether the user has access to the address
                         verifyMemoryAccess(pgrmCounter, isKernelMode, pw);
                         instrCount++;
-                        /*//  Checking if program is already in the middle of an interrupt
-                        if(!interruptOn){
-                            // Checking for timer interrupt
-                            if(instrCount >= timerRate){
-                                isKernelMode = true;
-                                instrCount = 0;
-                                int[] contents = moveToSystemMemory(pgrmCounter, pw, sPointer, 't');
-                                pgrmCounter = contents[0];
-                                sPointer = contents[1];
-                                interruptOn = true;
-                            }
-                        }*/
 
                         pw.printf("r " + pgrmCounter + "\n");
                         pw.flush();
@@ -499,21 +317,9 @@ public class CPU {
                     case 21:
                         if(accumulator == 0){
                             pgrmCounter++;
-                                //  Verifying whether the user has access to the address
+                            //  Verifying whether the user has access to the address
                             verifyMemoryAccess(pgrmCounter, isKernelMode, pw);
                             instrCount++;
-                            /*//  Checking if program is already in the middle of an interrupt
-                            if(!interruptOn){
-                                // Checking for timer interrupt
-                                if(instrCount >= timerRate){
-                                    isKernelMode = true;
-                                    instrCount = 0;
-                                    int[] contents = moveToSystemMemory(pgrmCounter, pw, sPointer, 't');
-                                    pgrmCounter = contents[0];
-                                    sPointer = contents[1];
-                                    interruptOn = true;
-                                }
-                            }*/
 
                             pw.printf("r " + pgrmCounter + "\n");
                             pw.flush();
@@ -531,27 +337,9 @@ public class CPU {
                     case 22:
                         if(accumulator != 0){
                             pgrmCounter++;
-                                //  Verifying whether the user has access to the address
+                            //  Verifying whether the user has access to the address
                             verifyMemoryAccess(pgrmCounter, isKernelMode, pw);
                             instrCount++;
-                            /*//  Checking if program is already in the middle of an interrupt
-                            if(!interruptOn){
-                                // Checking for timer interrupt
-                                if(instrCount >= timerRate){
-                                    isKernelMode = true;
-                                    instrCount = 0;
-                                    int sysStack = 1999;
-                                    pw.printf("w " + sysStack + " " + pgrmCounter + "\n");
-                                    pw.flush();
-                                    sysStack--;
-                                    pw.printf("w " + sysStack + " " + sPointer + "\n");
-                                    pw.flush();
-                                    pgrmCounter = 1000;
-                                    sPointer = sysStack;
-                                    interruptOn = true;
-                                    break;
-                                }
-                            }*/
 
                             pw.printf("r " + pgrmCounter + "\n");
                             pw.flush();
@@ -568,42 +356,18 @@ public class CPU {
                     //  Push next instruction to sPointer and jump to the given address
                     case 23:
                         pgrmCounter++;
-                            //  Verifying whether the user has access to the address
+                        //  Verifying whether the user has access to the address
                         verifyMemoryAccess(pgrmCounter, isKernelMode, pw);
                         instrCount++;
-                        /*//  Checking if program is already in the middle of an interrupt
-                        if(!interruptOn){
-                            // Checking for timer interrupt
-                            if(instrCount >= timerRate){
-                                isKernelMode = true;
-                                instrCount = 0;
-                                int[] contents = moveToSystemMemory(pgrmCounter, pw, sPointer, 't');
-                                pgrmCounter = contents[0];
-                                sPointer = contents[1];
-                                interruptOn = true;
-                            }
-                        }*/
 
                         pw.printf("r " + pgrmCounter + "\n");
                         pw.flush();
                         instrReg = getResponseFromMemory(is);
                         sPointer--;
                         pgrmCounter++;
-                            //  Verifying whether the user has access to the address
+                        //  Verifying whether the user has access to the address
                         verifyMemoryAccess(pgrmCounter, isKernelMode, pw);
                         instrCount++;
-                        /*//  Checking if program is already in the middle of an interrupt
-                        if(!interruptOn){
-                            // Checking for timer interrupt
-                            if(instrCount >= timerRate){
-                                isKernelMode = true;
-                                instrCount = 0;
-                                int[] contents = moveToSystemMemory(pgrmCounter, pw, sPointer, 't');
-                                pgrmCounter = contents[0];
-                                sPointer = contents[1];
-                                interruptOn = true;
-                            }
-                        }*/
 
                         pw.printf("w " + sPointer + " " + pgrmCounter + "\n");
                         pw.flush();
@@ -693,8 +457,6 @@ public class CPU {
                     default:
                         //  Ending execution when the End instruction is received
                         sendRequest = false;
-                        System.out.println("End instruction received...");
-                        System.out.println("Terminating Memory process...");
 
                         //  Exiting Memory.java process
                         pw.printf("e\n");
@@ -703,22 +465,19 @@ public class CPU {
                 }
             }
 
-                //  Elegantly terminating child process
+            //  Elegantly terminating child process
             memProc.waitFor();
-
-            System.out.println("Process exited: " + memProc.exitValue());
-            System.out.print("Exiting emulator...");
         }
         catch (Exception e){
             e.printStackTrace();
         }
     }
 
-        //  Converting response received from Memory to String
+    //  Converting response received from Memory to String
     private static int getResponseFromMemory(InputStream is){
         int response = -1;
         try{
-                //  Getting the response received back from Memory
+            //  Getting the response received back from Memory
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
             String str = br.readLine();
@@ -731,22 +490,20 @@ public class CPU {
         return response;
     }
 
-        //  Function to check if user is accessing system memory space
+    //  Function to check if user is accessing system memory space
     private static void verifyMemoryAccess(int pgrmCounter, boolean isKernelMode, PrintWriter pw){
-            //  Checking if the current mode is user and address to access is greater than 999
+        //  Checking if the current mode is user and address to access is greater than 999
         if(pgrmCounter > 999 && !isKernelMode){
-            System.out.println("Memory Violation: Accessing system address [1000 <-> 1999] in user mode");
-            System.out.println("Terminating Memory process...");
+            System.out.println("Memory Violation: Accessing system address " + pgrmCounter + " in user mode");
             pw.printf("e\n");
             pw.flush();
-            System.out.print("Exiting emulator...");
             System.exit(0);
         }
     }
 
-        //  Function to move everything from user memory to system memory due to interrupt
+    //  Function to move everything from user memory to system memory due to interrupt
     private static int[] moveToSystemMemory(int pgrmCounter, PrintWriter pw, int sPointer, char type){
-            //  Array to return the new pgrmCounter and sPointer index
+        //  Array to return the new pgrmCounter and sPointer index
         int[] contents = new int[2];
         int sysStack = 1999;
         pw.printf("w " + sysStack + " " + pgrmCounter + "\n");

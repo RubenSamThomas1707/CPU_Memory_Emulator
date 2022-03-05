@@ -1,0 +1,327 @@
+  // This input file will print the class name and then the string "CPU & Memory Emulator" followed by a new line. Then it would print some '*' as border and then print out the numbers
+  // 10 - 1 in reverse order. This file uses address jumping, timer interrupt, sys call, stack, incrementing and decrementing registers, etc to print the final output to the screen.
+  // This program prints the '^' character when a timeout happens and the timer interrupt handler is called.
+
+  // Output when timer cmd value == 473                                // Output when timer cmd value == 30
+  // CS 4348.001 - Operating Systems                                   // CS 4348.001 ^
+  // CPU & Memory Emulator                                             // - Operati^
+  // *********************                                             // ng S^
+  // 10                                                                // ystems
+  // 9                                                                 // CPU^
+  // 8                                                                 // & Memory^
+  // 7                                                                 // Emulator^
+  // 6                                                                 //
+  // 5                                                                 // ***^
+  // 4                                                                 // ***^
+  // 3                                                                 // ***^
+  // 2                                                                 // ***^
+  // 1                                                                 // ****^
+  // ^                                                                 // ***^
+                                                                       // **
+                                                                       // 10
+                                                                       // 9
+                                                                       // 8
+                                                                       // 7
+                                                                       // 6
+                                                                       // 5
+                                                                       // 4
+                                                                       // 3
+                                                                       // 2
+                                                                       // 1
+                                                                       // ^
+
+  // Instuction Begin
+1       // Loading C
+67
+9
+2
+1       // Loading S
+83
+9
+2
+1       // Loading space
+32
+9
+2
+1       // Loading 4
+4
+9
+1
+1       // Loading 3
+3
+9
+1
+1       // Loading 4
+4
+9
+1
+1       // Loading 8
+8
+9
+1
+1       // Loading ‘.’
+46
+9
+2
+1       // Loading 0
+0
+9
+1
+1       // Loading 0
+0
+9
+1
+1       // Loading 1
+1
+9
+1
+1       // Loading space
+32
+9
+2
+1       // Loading '-'
+45
+9
+2
+1       // Loading space
+32
+9
+2
+
+1       // Loading O
+79
+9
+2
+1
+112     // p
+9
+2
+1
+101     // e
+9
+2
+1
+114     // r
+9
+2
+1
+97     // a
+9
+2
+1
+116     // t
+9
+2
+1
+105     // i
+9
+2
+1
+110     // n
+9
+2
+1
+103     // g
+9
+2
+1       // Storing s on stack
+115
+27
+1       // Storing m on stack
+109
+27
+1       // Storing e on stack
+101
+27
+1       // Storing t on stack
+116
+27
+1       // Storing s on stack
+115
+27
+1       // Storing y on stack
+121
+27
+1       // Storing S on stack
+83
+27
+1       // Storing ' ' on stack
+32
+27
+28      // space
+9
+2
+28      // S
+9
+2
+28      // y
+9
+2
+28      // s
+9
+2
+28      // t
+9
+2
+28      // e
+9
+2
+28      // m
+9
+2
+28      // s
+9
+2
+1       // Loading newline
+10
+9
+2
+1       // Loading C
+67
+9
+2
+1       // Loading P
+80
+9
+2
+1       // Loading U
+85
+9
+2
+1       // Loading space
+32
+9
+2
+1       // Loading '&'
+38
+9
+2
+1       // Loading space
+32
+9
+2
+1       // Loading M
+77
+9
+2
+1       // Loading e
+101
+9
+2
+1       // Loading m
+109
+9
+2
+1       // Loading o
+111
+9
+2
+1       // Loading r
+114
+9
+2
+1       // Loading y
+121
+9
+2
+1       // Loading space
+32
+9
+2
+1       // Loading E
+69
+9
+2
+1       // Loading m
+109
+9
+2
+1       // Loading u
+117
+9
+2
+1       // Loading l
+108
+9
+2
+1       // Loading a
+97
+9
+2
+1       // Loading t
+116
+9
+2
+1       // Loading o
+111
+9
+2
+1       // Loading r
+114
+9
+2
+1       // Loading newline
+10
+9
+2
+1       // Loading newline onto AC
+10
+27      // Pushing AC onto stack
+1       // Load 21 into AC
+21
+22      // Jumping to address 350 if AC != 0 [Printing a row of x's]
+350
+28      // Popping value in AC to stack
+9
+2
+29      // Syscall
+50
+
+.350
+14      // Copying value in AC to X
+26      // Decrementing value in X
+1       // Loading '*'
+42
+9
+2
+15      // Copying value in X to AC
+20
+237
+
+.1000       // Timer interrupt Address
+27          // Pushing AC onto stack for later use
+1           // Printing '^' every time theres a timer interrupt
+94
+9
+2
+1           // Printing new line
+10
+9
+2
+28          // Pop value of AC stored previously in stack
+30
+
+.1500       // Sys Call Address
+1
+1
+16      // Copying value in AC to Y
+1       // Loading 10 to AC
+10
+22      // Jumping to Address 1650 if AC != 0
+1650
+30
+
+.1650
+21      // Jump to address 201 if AC == 0
+1505
+9       // Print current AC value
+1
+14      // Copy value in AC to X
+1       // Print newline
+10
+9
+2
+15      // Restoring value of AC
+13      // Subtracting Y from AC (AC = AC - 1)
+20
+1650
